@@ -39,8 +39,7 @@ DOCKER_UP() {
     if [[ ${version} != "latest" ]];then
 
     	wget https://ghproxy.com/https://github.com/lu0b0/ELM/releases/download/$version/elmmb -O /elmmb/elmmb
-    fi
-    if [[ ${version} == "latest" ]];then
+    else
     	wget https://ghproxy.com/https://github.com/lu0b0/ELM/releases/download/$(curl -Ls "https://api.github.com/repos/lu0b0/ELM/releases/latest" | 
 	grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')/elmmb -O /elmmb/elmmb
     fi	
@@ -57,14 +56,16 @@ CONFIRM=${CONFIRM:-"N"}
 if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	if [ ! -d "/elmmb" ]; then
 		mkdir /elmmb
-	read -p $'\n 输入版本号(默认最新版)：' version
-	version=${version:-"latest"}
-	read -p "是否需要配置授权Config文件（默认配置Y）" cfg
-	cfg=${cfg:-"Y"}
+		read -p $'\n 输入版本号(默认最新版)：' version
+		version=${version:-"latest"}
+		read -p "是否需要配置授权Config文件（默认配置Y）" cfg
+		cfg=${cfg:-"Y"}
 		if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
 			if [[ -f "/elmmb/Config.json"  ]]; then
-			echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）" cfg
-			cfg=${cfg:-"N"}
+			echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）" cfg2
+			cfg2=${cfg2:-"N"}
+				if [[ ${cfg2} == "Y" || ${cfg2} == "y" ]];then
+
 				read -p $'\n 输入授权码: ' sqm
 				sqm=${sqm:-""}
 				read -p $'\n 输入青龙url: 例：（http://192.168.0.1:5700）：' qlurl
@@ -96,21 +97,21 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 					}
 								]
 	}" > /elmmb/Config.json
+				fi
 			fi
 		fi
 	fi
-		if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
 
-		fi
 	DOCKER_INSTALL
 	DOCKER_UP
-fi
+#fi
 read -p "输入容器映射端口: （回车默认为3000）" pp
 pp=${pp:-"3000"}
 if [[ ${pp} != "3000" || ${pp} != "3000" ]];then
 	eval "docker run -dit   -v /elmmb:/etc/elm   -p $pp:3000   --name elmmb   --hostname elmmb   --restart unless-stopped    --restart always   elmmb:latest"
 else	
 	eval "docker run -dit   -v /elmmb:/etc/elm   -p 3000:3000   --name elmmb   --hostname elmmb   --restart unless-stopped    --restart always   elmmb:latest"
+fi
 fi
 
 exit 0

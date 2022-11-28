@@ -68,19 +68,24 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	##read -p "\n是否需要配置授权config文件（默认配置Y）" cfg
 	##cfg=${cfg:-"Y"}
 	if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
-	read -p $'\n 输入授权码: ' sqm
-	sqm=${sqm:-""}
-	read -p $'\n 输入青龙url: 例：（http://192.168.0.1:5700）：' qlurl
-	qlurl=${qlurl:-""}
+		if [[ -f "/elmmb/Config.json"  ]]; then
+	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"
+	cfg2=${cfg2:-"N"}
+		fi
+		if [[ ${cfg2} == "Y" || ${cfg2} == "y" ]];then
+			read -p $'\n 输入授权码: ' sqm
+			sqm=${sqm:-""}
+			read -p $'\n 输入青龙url: 例：（http://192.168.0.1:5700）：' qlurl
+			qlurl=${qlurl:-""}
 
-	read -p $'\n 输入容器CLIENTID: ' CLIENTID
-	CLIENTID=${CLIENTID:-""}
+			read -p $'\n 输入容器CLIENTID: ' CLIENTID
+			CLIENTID=${CLIENTID:-""}
 
-	read -p $'\n 输入容器SECRET: ' SECRET
-	SECRET=${SECRET:-""}
+			read -p $'\n 输入容器SECRET: ' SECRET
+			SECRET=${SECRET:-""}
 	
-	read -p $'\n 输入wxpusher推送的app_token 获取地址：https://wxpusher.zjiecode.com/admin (不设置推送按回车): ' wxpusher
-	wxpusher=${wxpusher:-""}
+			read -p $'\n 输入wxpusher推送的app_token 获取地址：https://wxpusher.zjiecode.com/admin (不设置推送按回车): ' wxpusher
+			wxpusher=${wxpusher:-""}
 
 	echo "{
 		\"Authorization\":\"$sqm\",

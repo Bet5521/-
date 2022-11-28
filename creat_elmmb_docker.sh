@@ -63,7 +63,7 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	fi
 	if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
 		if [[ -f "/elmmb/Config.json"  ]]; then
-	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"
+	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）" cfg2
 	cfg2=${cfg2:-"N"}
 		fi
 	fi	

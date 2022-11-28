@@ -52,7 +52,10 @@ read -p $'\n 输入版本号(默认2.7)：' version
 version=${version:-"2.7"}
 read -p "是否需要配置授权config文件（默认配置Y）" cfg
 cfg=${cfg:-"Y"}
-
+if [[ -f "/elmmb/Config.json"  ]]; then
+	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"
+	cfg=${cfg:-"N"}
+fi
 ##if [[ ! -f "/elmmb/Config.json"  ]]; then
 	
 ##fi
@@ -64,10 +67,6 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	##version=${version:-"2.7"}
 	##read -p "\n是否需要配置授权config文件（默认配置Y）" cfg
 	##cfg=${cfg:-"Y"}
-	if [[ -f "/elmmb/Config.json"  ]]; then
-	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"
-	cfg=${cfg:-"N"}
-	fi
 	if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
 	read -p $'\n 输入授权码: ' sqm
 	sqm=${sqm:-""}

@@ -57,13 +57,13 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	if [ ! -d "/elmmb" ]; then
 		mkdir /elmmb
 	fi
-	read -p $'\n 输入授权码: ' sqm
-	sqm=${sqm:-""}
 	read -p $'\n 输入版本号(默认2.7)：' version
 	version=${version:-"2.7"}
 	read -p "是否需要配置授权config文件（默认配置Y）" cfg
 	cfg=${cfg:-"Y"}
 	if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
+	read -p $'\n 输入授权码: ' sqm
+	sqm=${sqm:-""}
 	read -p $'\n 输入青龙url: 例：（http://192.168.0.1:5700）：' qlurl
 	qlurl=${qlurl:-""}
 

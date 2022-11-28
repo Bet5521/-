@@ -57,13 +57,6 @@ read -p $'\n 输入版本号(默认最新版)：' version
 version=${version:-"latest"}
 read -p "是否需要配置授权config文件（默认配置Y）" cfg
 cfg=${cfg:-"Y"}
-if [[ -f "/elmmb/Config.json"  ]]; then
-	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）第二次"
-	cfg=${cfg:-"N"}
-fi
-##if [[ ! -f "/elmmb/Config.json"  ]]; then
-	
-##fi
 if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	if [ ! -d "/elmmb" ]; then
 		mkdir /elmmb

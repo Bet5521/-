@@ -50,19 +50,27 @@ DOCKER_UP() {
 
 echo -e $"\n欢迎使用饿了么登陆面板Docker一键部署脚本"
 echo -e $"使用本脚本请确认已获取萝卜授权，否则无法正常使用"
+read -p "获取版本" vv
+vv=$(curl -Ls "https://api.github.com/repos/lu0b0/ELM/releases" | 
+	grep '"message":')
+if [[ ${vv} == "Not Found"]];then
+echo -e "版本错误"
+fi
 read -p "输入Y/y确认安装 跳过安装请直接回车:  " CONFIRM
 CONFIRM=${CONFIRM:-"N"}
 
 if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	if [ ! -d "/elmmb" ]; then
 		mkdir /elmmb
+	fi	
 		read -p $'\n 输入版本号(默认最新版)：' version
 		version=${version:-"latest"}
 		read -p "是否需要配置授权Config文件（默认配置Y）" cfg
 		cfg=${cfg:-"Y"}
 		if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
 			if [[ -f "/elmmb/Config.json"  ]]; then
-			echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）" cfg2
+			#echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）" 
+			read -p $"发现/elmmb/Config.json文件，是否确认重新配置？（默认N）" cfg2
 			cfg2=${cfg2:-"N"}
 				if [[ ${cfg2} == "Y" || ${cfg2} == "y" ]];then
 
@@ -100,18 +108,18 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 				fi
 			fi
 		fi
-	fi
+	
 
 	DOCKER_INSTALL
 	DOCKER_UP
-#fi
-read -p "输入容器映射端口: （回车默认为3000）" pp
-pp=${pp:-"3000"}
-if [[ ${pp} != "3000" || ${pp} != "3000" ]];then
-	eval "docker run -dit   -v /elmmb:/etc/elm   -p $pp:3000   --name elmmb   --hostname elmmb   --restart unless-stopped    --restart always   elmmb:latest"
-else	
-	eval "docker run -dit   -v /elmmb:/etc/elm   -p 3000:3000   --name elmmb   --hostname elmmb   --restart unless-stopped    --restart always   elmmb:latest"
+	read -p "输入容器映射端口: （回车默认为3000）" pp
+		pp=${pp:-"3000"}
+		if [[ ${pp} != "3000" || ${pp} != "3000" ]];then
+			eval "docker run -dit   -v /elmmb:/etc/elm   -p $pp:3000   --name elmmb   --hostname elmmb   --restart unless-stopped    --restart always   elmmb:latest"
+		else	
+			eval "docker run -dit   -v /elmmb:/etc/elm   -p 3000:3000   --name elmmb   --hostname elmmb   --restart unless-stopped    --restart always   elmmb:latest"
+		fi
 fi
-fi
+
 
 exit 0

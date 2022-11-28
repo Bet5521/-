@@ -37,9 +37,14 @@ DOCKER_UP() {
         wget https://ghproxy.com/https://raw.githubusercontent.com/lu0b0/ELM/main/images/Dockerfile -O /elmmb/Dockerfile
     fi
     
-    
-    wget https://ghproxy.com/https://github.com/lu0b0/ELM/releases/download/$version/elmmb -O /elmmb/elmmb
-    
+    if [[ ${version} != "latest" ]];then
+
+    	wget https://ghproxy.com/https://github.com/lu0b0/ELM/releases/download/$version/elmmb -O /elmmb/elmmb
+    fi
+    if [[ ${version} == "latest" ]];then
+    	wget https://ghproxy.com/https://github.com/lu0b0/ELM/releases/download/$(curl -Ls "https://api.github.com/repos/lu0b0/ELM/releases/latest" | 
+	grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')/elmmb -O /elmmb/elmmb
+    fi	
     chmod -R 777 /elmmb
 	
     docker build -t='elmmb' .
@@ -48,12 +53,12 @@ DOCKER_UP() {
 echo -e $"\n欢迎使用饿了么登陆面板Docker一键部署脚本"
 read -p "输入Y/y确认安装 跳过安装请直接回车:  " CONFIRM
 CONFIRM=${CONFIRM:-"N"}
-read -p $'\n 输入版本号(默认2.7)：' version
-version=${version:-"2.7"}
+read -p $'\n 输入版本号(默认最新版)：' version
+version=${version:-"latest"}
 read -p "是否需要配置授权config文件（默认配置Y）" cfg
 cfg=${cfg:-"Y"}
 if [[ -f "/elmmb/Config.json"  ]]; then
-	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"
+	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）第二次"
 	cfg=${cfg:-"N"}
 fi
 ##if [[ ! -f "/elmmb/Config.json"  ]]; then
@@ -63,10 +68,6 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	if [ ! -d "/elmmb" ]; then
 		mkdir /elmmb
 	fi
-	##read -p $'\n 输入版本号(默认2.7)：' version
-	##version=${version:-"2.7"}
-	##read -p "\n是否需要配置授权config文件（默认配置Y）" cfg
-	##cfg=${cfg:-"Y"}
 	if [[ ${cfg} == "Y" || ${cfg} == "y" ]];then
 		if [[ -f "/elmmb/Config.json"  ]]; then
 	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"

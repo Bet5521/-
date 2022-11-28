@@ -10,7 +10,7 @@ DOCKER_INSTALL() {
 
         curl -fsSL get.docker.com | bash 
     fi
-
+if false;then
     docker_compose_exists=$(docker-compose version 2>/dev/null)
     if [[ ${docker_compose_exists} == "" ]]; then
         OUT_ALERT "[?] 正在安装docker-compose"
@@ -19,6 +19,7 @@ DOCKER_INSTALL() {
         chmod +x /usr/local/bin/docker-compose && \
 	    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     fi
+ fi   
 }
 
 

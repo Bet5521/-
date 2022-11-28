@@ -72,6 +72,7 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"
 	cfg2=${cfg2:-"N"}
 		fi
+	fi	
 		if [[ ${cfg2} == "Y" || ${cfg2} == "y" ]];then
 			read -p $'\n 输入授权码: ' sqm
 			sqm=${sqm:-""}
@@ -103,7 +104,7 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 			}
 		]
 	}" > /elmmb/Config.json
-	fi
+		fi
 	DOCKER_INSTALL
 	DOCKER_UP
 fi

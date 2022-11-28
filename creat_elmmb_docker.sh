@@ -64,7 +64,7 @@ if [[ ${CONFIRM} == "Y" || ${CONFIRM} == "y" ]];then
 	##version=${version:-"2.7"}
 	##read -p "\n是否需要配置授权config文件（默认配置Y）" cfg
 	##cfg=${cfg:-"Y"}
-	if [[ ! -f "/elmmb/Config.json"  ]]; then
+	if [[ -f "/elmmb/Config.json"  ]]; then
 	echo -e $"\n已发现存在Config文件，是否确认重新配置？（默认N）"
 	cfg=${cfg:-"N"}
 	fi
